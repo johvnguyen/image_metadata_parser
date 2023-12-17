@@ -1,5 +1,9 @@
 import struct
 import sys
+import os
+
+def is_end_of_file(fip):
+    return fip.tell() == os.fstat(fip.fileno()).st_size
 
 def parseIHDR(ihdr_bytes):
     # All ihdr chunks are 13 bytes long
@@ -47,32 +51,31 @@ header_values = struct.Struct(format_string).unpack_from(png_header_bytes)
 # convert to hex
 header_values = [hex(x) for x in header_values]
 
-print(header_values)
+#print(header_values)
 
-### Parsing Chunks
-# Parsing the Chunk Length and Chunk Type
-lentype_format_string = '>I4s'
-lentype_size = struct.calcsize(lentype_format_string)
-lentype_bytes = img_file.read(lentype_size)
-lentype_values = struct.Struct(lentype_format_string).unpack_from(lentype_bytes)
+### Parsing chunks
+while True:
+    # Parsing Chunk Length and Chunk Type
+    lentype_format_string = '>I4s'
+    lentype_size = struct.calcsize(lentype_format_string)
+    lentype_bytes = img_file.read(lentype_size)
+    lentype_values = struct.Struct(lentype_format_string).unpack_from(lentype_bytes)
 
-chunk_length = lentype_values[0]
-chunk_type = lentype_values[1].decode('utf-8')
+    chunk_length = lentype_values[0]
+    chunk_type = lentype_values[1].decode('utf-8')
 
-print(f'Chunk Length: {chunk_length}\nChunk Type: {chunk_type}')
+    print(f'Chunk Length: {chunk_length}\nChunk Type: {chunk_type}\n\n')
 
-crc_format_string = 'I'
-crc_size = struct.calcsize(crc_format_string)
+    # Parsing Chunk Data and CRC32 checksum
+    crc_format_string = 'I'
+    crc_size = struct.calcsize(crc_format_string)
 
-chunk_bytes = img_file.read(chunk_length)
+    chunk_bytes = img_file.read(chunk_length)
 
-crc_bytes = img_file.read(crc_size)
+    crc_bytes = img_file.read(crc_size)
 
-if chunk_type == "IHDR":
-    parseIHDR(chunk_bytes)
+    if chunk_type == 'IHDR':
+        parseIHDR(chunk_bytes)
 
-crc_values = struct.Struct(crc_format_string).unpack_from(crc_bytes)[0]
-
-# The crc32 value (remainder after dividing by standard polynomial), used for data error detection. See CRC32 algorithm for more information
-print(f'{crc_values:08x}')
-
+    if is_end_of_file(img_file):
+        break
