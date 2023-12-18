@@ -1,7 +1,0 @@
-DEBUG:root:Parsed chunk type IHDR with data length 13
-DEBUG:root:Parsed chunk type sRGB with data length 1
-DEBUG:root:Parsed chunk type gAMA with data length 4
-DEBUG:root:Parsed chunk type pHYs with data length 9
-DEBUG:root:Parsed chunk type IDAT with data length 65445
-DEBUG:root:Parsed chunk type IDAT with data length 8896
-DEBUG:root:Parsed chunk type IEND with data length 0
