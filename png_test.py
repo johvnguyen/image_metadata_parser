@@ -51,7 +51,7 @@ header_values = struct.Struct(format_string).unpack_from(png_header_bytes)
 # convert to hex
 header_values = [hex(x) for x in header_values]
 
-#print(header_values)
+print(f'Header values: {header_values}')
 
 ### Parsing chunks
 while True:

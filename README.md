@@ -8,3 +8,5 @@ I anticipate to support the following formats:
 - TIFF?
 
 
+### TODO
+- Write more PNG Chunk Parsers
