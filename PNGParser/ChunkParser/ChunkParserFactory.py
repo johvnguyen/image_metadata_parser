@@ -1,6 +1,7 @@
 from PNGParser.ChunkParser.GenericChunkParser import GenericChunkParser
 from PNGParser.ChunkParser.IHDRChunkParser import IHDRChunkParser
 from PNGParser.ChunkParser.sRGBChunkParser import sRGBChunkParser
+from PNGParser.ChunkParser.gAMAChunkParser import gAMAChunkParser
 
 class ChunkParserFactory():
     def __init__(self):
@@ -12,6 +13,8 @@ class ChunkParserFactory():
             return IHDRChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'sRGB':
             return sRGBChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'gAMA':
+            return gAMAChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
