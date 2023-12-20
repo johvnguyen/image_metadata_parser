@@ -1,4 +1,3 @@
-from xml.dom import ValidationErr
 from PNGParser.ChunkParser.ChunkParser import ChunkParser
 import struct
 import logging
@@ -28,7 +27,7 @@ class sRGBChunkParser(ChunkParser):
         
         try:
             self.validate_rendering_intent(rendering_intent)
-        except ValidationErr as err:
+        except ValueError as err:
             logging.debug(f"Error found in sRGB rendering intent value: {rendering_intent}")
             print(err)
             exit()
@@ -44,7 +43,7 @@ class sRGBChunkParser(ChunkParser):
     def validate_rendering_intent(self, rendering_intent):
         if rendering_intent not in [0, 1, 2]:
             logging.warning(f'Rendering intent is {rendering_intent}. Valid values: {[0, 1, 2]}')
-            raise ValidationErr
+            raise ValueError
         return
 
     def print_metadata(self):

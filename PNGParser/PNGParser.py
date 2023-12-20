@@ -1,4 +1,3 @@
-from xml.dom import ValidationErr
 from ImageParser import ImageParser
 from PNGParser.ChunkParser.ChunkParserFactory import ChunkParserFactory
 import logging
@@ -44,9 +43,9 @@ class PNGParser(ImageParser):
 
             for (val, sig) in zip(header_values, header_signature):
                 if val != sig:
-                    raise ValidationErr
+                    raise ValueError
 
-        except ValidationErr as err:            # TODO: Move this exception into parse() function
+        except ValueError as err:            # TODO: Move this exception into parse() function
             logging.warning(f"File does not have header signature. File is potentiall corrupted! Terminating parse() call")
             print(err)
             return

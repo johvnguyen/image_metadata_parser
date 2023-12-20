@@ -1,4 +1,3 @@
-from xml.dom import ValidationErr
 from PNGParser.ChunkParser.ChunkParser import ChunkParser
 import struct
 import logging
@@ -28,7 +27,7 @@ class IHDRChunkParser(ChunkParser):
 
         try:
             self.validate_ihdr_data(ihdr_vals)
-        except ValidationErr as err:
+        except ValueError as err:
             logging.debug(f"Error found in IHDR data values: {ihdr_vals}")
             print(err)
             exit()
@@ -63,31 +62,31 @@ class IHDRChunkParser(ChunkParser):
     def validate_bit_depth(self, bit_depth):
         if bit_depth not in [1, 2, 4, 8, 16]:
             logging.warning(f'Bit depth is {bit_depth}. Valid values: {[1, 2, 4, 8, 16]}')
-            raise ValidationErr
+            raise ValueError
         return
 
     def validate_color_type(self, color_type):
         if color_type not in [0, 2, 3, 4, 16]:
             logging.warning(f'Color type is {color_type}. Valid values: {[0, 2, 3, 4, 16]}')
-            raise ValidationErr
+            raise ValueError
         return
 
     def validate_compression_method(self, compression_method):
         if compression_method != 0:
             logging.warning(f'Compression method is {compression_method}. Must be 0')
-            raise ValidationErr
+            raise ValueError
         return
 
     def validate_filter_method(self, filter_method):
         if filter_method != 0:
             logging.warning(f'Filter method is {filter_method}. Must be 0')
-            raise ValidationErr
+            raise ValueError
         return
 
     def validate_interface_method(self, interface_method):
         if interface_method not in [0, 1]:
             logging.warning(f'Interface Method is {interface_method}. Valid values: {[0, 1]}')
-            raise ValidationErr
+            raise ValueError
         return
 
 
