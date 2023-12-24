@@ -24,7 +24,7 @@ class gAMAChunkParser(ChunkParser):
         self.data = struct.Struct(gama_format_string).unpack_from(gama_bytes)[0]
 
         crc_bytes = image_fp.read(struct.calcsize('>I'))
-        self.crc = struct.Struct('>I').unpack_from(crc_bytes)
+        self.crc = struct.Struct('>I').unpack_from(crc_bytes)[0]
 
         return
 

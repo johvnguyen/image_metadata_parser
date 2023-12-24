@@ -27,7 +27,7 @@ class pHYsChunkParser(ChunkParser):
         self.data['In meters'] = phys_data[2]
 
         crc_bytes = image_fp.read(struct.calcsize('>I'))
-        self.crc = struct.Struct('>I').unpack_from(crc_bytes)
+        self.crc = struct.Struct('>I').unpack_from(crc_bytes)[0]
 
         return
 
