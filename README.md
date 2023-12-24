@@ -30,3 +30,5 @@ I anticipate to support the following formats:
 
 ### TODO
 - Write more PNG Chunk Parsers
+- Refactor exceptions in some chunk parsers such as IHDR parser to use custom exception messages instead of generic ValueError. Ideally use both.
+- Unit testing on faulty PNGs and see if error messages and logging can help catch the faults.
