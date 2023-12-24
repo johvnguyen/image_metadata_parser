@@ -17,7 +17,7 @@ I anticipate to support the following formats:
 	- [ ] zTXt Parser
 	- [ ] iTXt Parser
 	- [ ] bKGD Parser
-	- [ ] pHYs Parser
+	- [x] pHYs Parser
 	- [ ] sBIT Parser
 	- [ ] sPLT Parser
 	- [ ] hIST Parser
