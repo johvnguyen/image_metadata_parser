@@ -9,7 +9,7 @@ logging.basicConfig(filename = f'logs/png_driver{time.strftime("%Y%m%d-%H%M%S")}
 
 if __name__ == '__main__':
     png_parser = PNGParser()
-    png_parser.parse('images/duck.png')
+    png_parser.parse('images/PNG_transparency_demonstration_1.png')
     png_parser.print_metadata()
 
     exit()

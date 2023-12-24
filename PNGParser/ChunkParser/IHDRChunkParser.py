@@ -29,6 +29,7 @@ class IHDRChunkParser(ChunkParser):
             self.validate_ihdr_data(ihdr_vals)
         except ValueError as err:
             logging.debug(f"Error found in IHDR data values: {ihdr_vals}")
+            print(f"Error found in IHDR data values: {ihdr_vals}. See logs.")
             print(err)
             exit()
 
@@ -56,6 +57,7 @@ class IHDRChunkParser(ChunkParser):
         self.validate_compression_method(ihdr_vals[4])
         self.validate_filter_method(ihdr_vals[5])
         self.validate_interface_method(ihdr_vals[6])
+        self.validate_color_type_bit_depth_combination(ihdr_vals[2], ihdr_vals[3])
 
         return
 
@@ -66,9 +68,10 @@ class IHDRChunkParser(ChunkParser):
         return
 
     def validate_color_type(self, color_type):
-        if color_type not in [0, 2, 3, 4, 16]:
-            logging.warning(f'Color type is {color_type}. Valid values: {[0, 2, 3, 4, 16]}')
+        if color_type not in [0, 2, 3, 4, 6]:
+            logging.warning(f'Color type is {color_type}. Valid values: {[0, 2, 3, 4, 6]}')
             raise ValueError
+
         return
 
     def validate_compression_method(self, compression_method):
@@ -87,6 +90,26 @@ class IHDRChunkParser(ChunkParser):
         if interface_method not in [0, 1]:
             logging.warning(f'Interface Method is {interface_method}. Valid values: {[0, 1]}')
             raise ValueError
+        return
+
+    def validate_color_type_bit_depth_combination(self, bit_depth, color_type):
+        if color_type == 0:
+            if bit_depth not in [1, 2, 4, 8, 16]:
+                logging.warning(f'Incompatible bit depth and color type value found. Bit depth is {bit_depth} so color type must be one of {[1, 2, 4, 8, 16]} but is {color_type}.')
+                raise ValueError
+        elif color_type == 3:
+            if bit_depth not in [1, 2, 4, 8]:
+                logging.warning(f'Incompatible bit depth and color type value found. Bit depth is {bit_depth} so color type must be one of {[2, 4, 8, 16]} but is {color_type}.')
+                raise ValueError
+        elif color_type in [2, 4, 6]:
+            if bit_depth not in [8, 16]:
+                logging.warning(f'Incompatible bit depth and color type value found. Bit depth is {bit_depth} so color type must be one of {[8, 16]} but is {color_type}.')
+                raise ValueError
+        else:
+            # This should never run
+            logging.warning(f'Invalid bit depth found: bit depth = {bit_depth}')
+            raise ValueError
+
         return
 
 
