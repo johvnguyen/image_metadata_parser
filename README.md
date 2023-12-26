@@ -6,11 +6,11 @@ I anticipate to support the following formats:
 	- [x] IHDR Parser
 	- [x] PLTE Parser
 	- [x] IDAT Parser
-	- [ ] IEND Parser
+	- [x] IEND Parser
 	- [x] gAMA Parser
 	- [x] IHDR Parser
 	- [x] sRGB Parser
-	- [ ] tRNS Parser
+	- [x] tRNS Parser
 	- [ ] cHRM Parser
 	- [ ] iCCP Parser
 	- [ ] tEXt Parser
