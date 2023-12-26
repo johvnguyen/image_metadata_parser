@@ -3,6 +3,8 @@ from PNGParser.ChunkParser.IHDRChunkParser import IHDRChunkParser
 from PNGParser.ChunkParser.sRGBChunkParser import sRGBChunkParser
 from PNGParser.ChunkParser.gAMAChunkParser import gAMAChunkParser
 from PNGParser.ChunkParser.pHYsChunkParser import pHYsChunkParser
+from PNGParser.ChunkParser.PLTEChunkParser import PLTEChunkParser
+
 
 class ChunkParserFactory():
     def __init__(self):
@@ -18,6 +20,8 @@ class ChunkParserFactory():
             return gAMAChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'pHYs':
             return pHYsChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'PLTE':
+            return PLTEChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
