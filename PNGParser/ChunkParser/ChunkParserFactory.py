@@ -5,6 +5,8 @@ from PNGParser.ChunkParser.gAMAChunkParser import gAMAChunkParser
 from PNGParser.ChunkParser.pHYsChunkParser import pHYsChunkParser
 from PNGParser.ChunkParser.PLTEChunkParser import PLTEChunkParser
 from PNGParser.ChunkParser.IDATChunkParser import IDATChunkParser
+from PNGParser.ChunkParser.IENDChunkParser import IENDChunkParser
+from PNGParser.ChunkParser.tRNSChunkParser import tRNSChunkParser
 
 
 class ChunkParserFactory():
@@ -25,6 +27,10 @@ class ChunkParserFactory():
             return PLTEChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'IDAT':
             return IDATChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'IEND':
+            return IENDChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'tRNS':
+            return tRNSChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:

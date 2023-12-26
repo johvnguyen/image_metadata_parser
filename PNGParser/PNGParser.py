@@ -68,14 +68,31 @@ class PNGParser(ImageParser):
 
         # Create a parser for this type of chunk and parse
         parser = self.chunk_parser_factory.generate(chunk_len, chunk_type)
-        parser.parse(self.image_fp)
+
+        if chunk_type == 'tRNS':
+            color_type = self.get_color_type()
+            bit_depth = self.get_bit_depth()
+
+            parser.parse(self.image_fp, color_type, bit_depth)
+        else:
+            parser.parse(self.image_fp)
 
         # Add to chunk parser list
         self.chunk_parsers.append(parser)
 
         return
 
+    def get_color_type(self):
+        assert(len(self.chunk_parsers) > 0)
+        assert(self.chunk_parsers[0].type == 'IHDR')
 
+        return self.chunk_parsers[0].data['Color Type']
+
+    def get_bit_depth(self):
+        assert(len(self.chunk_parsers) > 0)
+        assert(self.chunk_parsers[0].type == 'IHDR')
+
+        return self.chunk_parsers[0].data['Bit Depth']
 
 
     def print_metadata(self):
