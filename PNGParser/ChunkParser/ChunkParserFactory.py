@@ -4,6 +4,7 @@ from PNGParser.ChunkParser.sRGBChunkParser import sRGBChunkParser
 from PNGParser.ChunkParser.gAMAChunkParser import gAMAChunkParser
 from PNGParser.ChunkParser.pHYsChunkParser import pHYsChunkParser
 from PNGParser.ChunkParser.PLTEChunkParser import PLTEChunkParser
+from PNGParser.ChunkParser.IDATChunkParser import IDATChunkParser
 
 
 class ChunkParserFactory():
@@ -22,6 +23,8 @@ class ChunkParserFactory():
             return pHYsChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'PLTE':
             return PLTEChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'IDAT':
+            return IDATChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
