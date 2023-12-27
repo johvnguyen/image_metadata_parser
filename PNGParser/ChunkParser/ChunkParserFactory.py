@@ -7,6 +7,8 @@ from PNGParser.ChunkParser.PLTEChunkParser import PLTEChunkParser
 from PNGParser.ChunkParser.IDATChunkParser import IDATChunkParser
 from PNGParser.ChunkParser.IENDChunkParser import IENDChunkParser
 from PNGParser.ChunkParser.tRNSChunkParser import tRNSChunkParser
+from PNGParser.ChunkParser.cHRMChunkParser import cHRMChunkParser
+
 
 
 class ChunkParserFactory():
@@ -31,6 +33,8 @@ class ChunkParserFactory():
             return IENDChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'tRNS':
             return tRNSChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'cHRM':
+            return cHRMChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
