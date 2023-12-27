@@ -35,6 +35,9 @@ class iCCPChunkParser(ChunkParser):
         # Is this even a string? Do not print until I have a testing sample
         #self.data['Compressed Profile'] = compressed_profile
 
+        crc_bytes = image_fp.read(struct.calcsize('>I'))
+        self.crc = struct.Struct('>I').unpack_from(crc_bytes)[0]
+
         return
 
     def parse_profile_name(self, image_fp):

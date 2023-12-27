@@ -19,7 +19,7 @@ class IENDChunkParser(ChunkParser):
         # Data part of IEND Chunk is empty, i.e. size 0 so only read crc byte
 
         crc_bytes = image_fp.read(struct.calcsize('>I'))
-        self.crc = struct.Struct('>I').unpack_from(crc_bytes)
+        self.crc = struct.Struct('>I').unpack_from(crc_bytes)[0]
 
         return
 
