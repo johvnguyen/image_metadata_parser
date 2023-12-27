@@ -4,3 +4,4 @@
 ./PNGParser/ChunkParser/IncompleteChunkParser.py
 ./.git/
 ./__pycache__/
+*.vs/*

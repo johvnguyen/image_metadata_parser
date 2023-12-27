@@ -11,7 +11,7 @@ I anticipate to support the following formats:
 	- [x] IHDR Parser
 	- [x] sRGB Parser
 	- [x] tRNS Parser
-	- [ ] cHRM Parser
+	- [x] cHRM Parser
 	- [ ] iCCP Parser
 	- [ ] tEXt Parser
 	- [ ] zTXt Parser
