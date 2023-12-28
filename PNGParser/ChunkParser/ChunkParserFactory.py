@@ -9,6 +9,7 @@ from PNGParser.ChunkParser.IENDChunkParser import IENDChunkParser
 from PNGParser.ChunkParser.tRNSChunkParser import tRNSChunkParser
 from PNGParser.ChunkParser.cHRMChunkParser import cHRMChunkParser
 from PNGParser.ChunkParser.iCCPChunkParser import iCCPChunkParser
+from PNGParser.ChunkParser.tEXtChunkParser import tEXtChunkParser
 
 
 
@@ -38,6 +39,8 @@ class ChunkParserFactory():
             return cHRMChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'iCCP':
             return iCCPChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'tEXt':
+            return tEXtChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:

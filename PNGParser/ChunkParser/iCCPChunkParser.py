@@ -24,11 +24,11 @@ class iCCPChunkParser(ChunkParser):
 
         compression_method = self.parse_compression_method(image_fp)
 
-        # -2 because there is 1 byte for the null seperator and 1 byte for the compression method
-        compressed_profile_size = self.data_len - profile_name_len - 2
+        # -2 because there is 1 byte for the null seperator, 1 byte for the compression method and 4 bytes for crc that is later parsed
+        compressed_profile_size = self.data_len - profile_name_len - 2 - 4
         compressed_profile_bytes = image_fp.read(compressed_profile_size)
         compressed_profile_format_string = ''.join(['>', 's' * compressed_profile_size])
-        compressed_profile = struct.Struct(compressed_profile_format_string).unpack_from(compressed_profile_bytes)[0]
+        compressed_profile = struct.Struct(compressed_profile_format_string).unpack_from(compressed_profile_bytes)[0].decode('utf-8')
 
         self.data['Profile Name'] = profile_name
         self.data['Compression Method'] = compression_method
