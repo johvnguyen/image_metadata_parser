@@ -13,7 +13,7 @@ I anticipate to support the following formats:
 	- [x] tRNS Parser
 	- [x] cHRM Parser
 	- [x] iCCP Parser
-	- [ ] tEXt Parser
+	- [x] tEXt Parser
 	- [ ] zTXt Parser
 	- [ ] iTXt Parser
 	- [ ] bKGD Parser
