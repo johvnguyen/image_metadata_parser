@@ -74,6 +74,10 @@ class PNGParser(ImageParser):
             bit_depth = self.get_bit_depth()
 
             parser.parse(self.image_fp, color_type, bit_depth)
+        elif chunk_type == 'bKGD':
+            color_type = self.get_color_type()
+
+            parser.parse(self.image_Fp, color_type)
         else:
             parser.parse(self.image_fp)
 

@@ -66,7 +66,8 @@ class zTXtChunkParser(ChunkParser):
         print(f'Chunk Data Length = {self.data_len}')
         print(f'Chunk Type = {self.type}')
         
-        # TODO
+        for key in self.data.keys():
+            print(f'{key} = {self.data[key]}')
 
         print(f'Chunk CRC32 Checksum = {self.crc}')
         print(f'----------------------------------------\n\n')

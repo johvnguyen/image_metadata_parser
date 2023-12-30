@@ -11,6 +11,8 @@ from PNGParser.ChunkParser.cHRMChunkParser import cHRMChunkParser
 from PNGParser.ChunkParser.iCCPChunkParser import iCCPChunkParser
 from PNGParser.ChunkParser.tEXtChunkParser import tEXtChunkParser
 from PNGParser.ChunkParser.zTXtChunkParser import zTXtChunkParser
+from PNGParser.ChunkParser.bKGDChunkParser import bKGDChunkParser
+
 
 
 
@@ -45,6 +47,8 @@ class ChunkParserFactory():
             return tEXtChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'zTXt':
             return zTXtChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'bKGD':
+            return bKGDChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
