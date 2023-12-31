@@ -1,5 +1,6 @@
 from PNGParser.ChunkParser.GenericChunkParser import GenericChunkParser
 from PNGParser.ChunkParser.IHDRChunkParser import IHDRChunkParser
+from PNGParser.ChunkParser.sBITChunkParser import sBITChunkParser
 from PNGParser.ChunkParser.sRGBChunkParser import sRGBChunkParser
 from PNGParser.ChunkParser.gAMAChunkParser import gAMAChunkParser
 from PNGParser.ChunkParser.pHYsChunkParser import pHYsChunkParser
@@ -12,6 +13,7 @@ from PNGParser.ChunkParser.iCCPChunkParser import iCCPChunkParser
 from PNGParser.ChunkParser.tEXtChunkParser import tEXtChunkParser
 from PNGParser.ChunkParser.zTXtChunkParser import zTXtChunkParser
 from PNGParser.ChunkParser.bKGDChunkParser import bKGDChunkParser
+from PNGParser.ChunkParser.sBITChunkParser import sBITChunkParser
 
 
 
@@ -49,6 +51,8 @@ class ChunkParserFactory():
             return zTXtChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'bKGD':
             return bKGDChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'sBIT':
+            return sBITChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
