@@ -14,6 +14,7 @@ from PNGParser.ChunkParser.tEXtChunkParser import tEXtChunkParser
 from PNGParser.ChunkParser.zTXtChunkParser import zTXtChunkParser
 from PNGParser.ChunkParser.bKGDChunkParser import bKGDChunkParser
 from PNGParser.ChunkParser.sBITChunkParser import sBITChunkParser
+from PNGParser.ChunkParser.hISTChunkParser import hISTChunkParser
 
 
 
@@ -53,6 +54,8 @@ class ChunkParserFactory():
             return bKGDChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'sBIT':
             return sBITChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'hIST':
+            return hISTChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:

@@ -20,7 +20,7 @@ I anticipate to support the following formats:
 	- [x] pHYs Parser
 	- [x] sBIT Parser
 	- [ ] sPLT Parser
-	- [ ] hIST Parser
+	- [x] hIST Parser
 	- [ ] tIME Parser
 
 - JPG/JPEG
