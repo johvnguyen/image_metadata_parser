@@ -19,7 +19,7 @@ I anticipate to support the following formats:
 	- [x] bKGD Parser
 	- [x] pHYs Parser
 	- [x] sBIT Parser
-	- [ ] sPLT Parser
+	- [x] sPLT Parser
 	- [x] hIST Parser
 	- [ ] tIME Parser
 
