@@ -21,7 +21,7 @@ I anticipate to support the following formats:
 	- [x] sBIT Parser
 	- [x] sPLT Parser
 	- [x] hIST Parser
-	- [ ] tIME Parser
+	- [x] tIME Parser
 
 - JPG/JPEG
 - GIF?

@@ -7,6 +7,7 @@ from PNGParser.ChunkParser.pHYsChunkParser import pHYsChunkParser
 from PNGParser.ChunkParser.PLTEChunkParser import PLTEChunkParser
 from PNGParser.ChunkParser.IDATChunkParser import IDATChunkParser
 from PNGParser.ChunkParser.IENDChunkParser import IENDChunkParser
+from PNGParser.ChunkParser.tIMEChunkParser import tIMEChunkParser
 from PNGParser.ChunkParser.tRNSChunkParser import tRNSChunkParser
 from PNGParser.ChunkParser.cHRMChunkParser import cHRMChunkParser
 from PNGParser.ChunkParser.iCCPChunkParser import iCCPChunkParser
@@ -16,6 +17,7 @@ from PNGParser.ChunkParser.bKGDChunkParser import bKGDChunkParser
 from PNGParser.ChunkParser.sBITChunkParser import sBITChunkParser
 from PNGParser.ChunkParser.hISTChunkParser import hISTChunkParser
 from PNGParser.ChunkParser.sPLTChunkParser import sPLTChunkParser
+from PNGParser.ChunkParser.tIMEChunkParser import tIMEChunkParser
 
 
 
@@ -59,6 +61,8 @@ class ChunkParserFactory():
             return hISTChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'sPLT':
             return sPLTChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'tIME':
+            return tIMEChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
