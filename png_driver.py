@@ -9,7 +9,7 @@ logging.basicConfig(filename = f'logs/png_driver{time.strftime("%Y%m%d-%H%M%S")}
 
 if __name__ == '__main__':
     png_parser = PNGParser()
-    png_parser.parse('images/modern-view-acrobat.png.img.png')
+    png_parser.parse('images/png/modern-view-acrobat.png.img.png')
     png_parser.print_metadata()
 
     exit()
