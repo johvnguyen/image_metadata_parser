@@ -38,8 +38,10 @@ I anticipate to support the following formats:
 			- Refactor function names so that they are consistent and obvious throughout PNGParser
 				- Functions which return a byte object should be prefixed with 'decode'
 				- Functions which parse the image file pointer and sets associated variables should be prefixed with 'parse'
+		- Refactor exceptions in some chunk parsers such as IHDR parser to use custom exception messages instead of generic ValueError. Ideally use both.
+	- Find more png files to test with.
 	- In PNGParser, write a function to take in all IDAT data and apply corresponding decompression algorithm to return raw image data.
-	- Refactor exceptions in some chunk parsers such as IHDR parser to use custom exception messages instead of generic ValueError. Ideally use both.
+	
 	- Unit testing on faulty PNGs and see if error messages and logging can help catch the faults.
 	- 
 	
