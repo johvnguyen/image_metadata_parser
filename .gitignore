@@ -3,4 +3,4 @@
 PNGParser/ChunkParser/__pycache__/*.pyc
 ./PNGParser/ChunkParser/IncompleteChunkParser.py
 *.vs/*
-./notes.txt
+notes.txt

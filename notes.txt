@@ -1,8 +1,0 @@
-Notes
-
-1/5:
-	Using (https://yasoob.me/posts/understanding-and-writing-jpeg-decoder-in-python/) to study JPEG files and ideas on how to parse the files.
-	JPG and JPEG are two names for the same thing.
-	JPEG is a compression algorithm, most "JPEG" files follow the JPEG File Interchange Format (JFIF) format and uses the JPEG algorithm.
-	For a first attempt, ignore color space encoding/decoding. Simply save the bytes so they can be accessed later.
-	Re-read the above article and watch all linked videos tomorrow.
