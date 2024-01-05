@@ -18,6 +18,7 @@ from PNGParser.ChunkParser.sBITChunkParser import sBITChunkParser
 from PNGParser.ChunkParser.hISTChunkParser import hISTChunkParser
 from PNGParser.ChunkParser.sPLTChunkParser import sPLTChunkParser
 from PNGParser.ChunkParser.tIMEChunkParser import tIMEChunkParser
+from PNGParser.ChunkParser.iTXtChunkParser import iTXtChunkParser
 
 
 
@@ -63,6 +64,8 @@ class ChunkParserFactory():
             return sPLTChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'tIME':
             return tIMEChunkParser(chunk_len, chunk_type)
+        elif chunk_type == 'iTXt':
+            return iTXtChunkParser(chunk_len, chunk_type)
         elif chunk_type == 'FILL IN LATER':  # TODO
             pass
         else:
