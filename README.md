@@ -24,6 +24,7 @@ I anticipate to support the following formats:
 	- [x] tIME Parser
 
 - JPG/JPEG
+	- Much of my parser will be based on Yasoob Khalid's fantastic blog post on the [topic](https://yasoob.me/posts/understanding-and-writing-jpeg-decoder-in-python/#huffman-encoding). I credit any success in this parser to him and any bugs or errors found in here to myself. I will also be using the profile picture he used as an example for my testing.
 - GIF?
 - TIFF?
 
