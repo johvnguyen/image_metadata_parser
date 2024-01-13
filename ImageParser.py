@@ -5,7 +5,7 @@ class ImageParser(ABC):
         self.image_fp = None
 
     @abstractmethod
-    def parse(self, image_fid):
+    def parse(self, filename):
         pass
 
     @abstractmethod
