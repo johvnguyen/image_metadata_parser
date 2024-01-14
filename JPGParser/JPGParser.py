@@ -26,6 +26,7 @@ class JPGParser(ImageParser):
         # TODO: Begin parsing the file. I've already "read" the header signature, so the file pointer is moved up 2 bytes
         self.parse_segments()
         
+        return
         
         
 
@@ -59,3 +60,46 @@ class JPGParser(ImageParser):
         header = struct.unpack(header_fmt_str, header_bytes)[0]
         
         return header
+    
+    def parse_segments(self):
+        signature = ''
+        
+        offset = 0
+
+        while signature != 0xffd9:
+            signature = self.parse_segment_signature()
+            
+            if signature in self.get_segments_with_length():
+                length = self.parse_length()
+            
+            else:
+                length = None
+            
+            segment_parser = self.segment_parser_factory.generate(signature, length)
+            segment_parser.parse()
+            
+            self.segment_parsers.append(segment_parser)
+            
+        return
+            
+            
+            
+    def parse_segment_signature(self):
+        sig_fmt_str = '>H'
+        sig_size = struct.calcsize(sig_fmt_str)
+        sig_bytes = self.image_fp.read(sig_size)
+        signature = struct.unpack(sig_fmt_str, sig_bytes)[0]
+        
+        return signature
+        
+    def get_segments_with_length(self):
+        return [0xffe0, 0xffdb, 0xffc0, 0xffc4, 0xffda]
+    
+    def parse_length(self):
+        length_fmt_str = '>H'
+        length_size = struct.calcsize(length_fmt_str)
+        length_bytes = self.image_fp.read(length_size)
+        length = struct.unpack(length_fmt_str, length_bytes)[0]
+        
+        return length
+    
