@@ -77,7 +77,7 @@ class PNGParser(ImageParser):
         elif chunk_type == 'bKGD':
             color_type = self.get_color_type()
 
-            parser.parse(self.image_Fp, color_type)
+            parser.parse(self.image_fp, color_type)
         else:
             parser.parse(self.image_fp)
 

@@ -1,6 +1,6 @@
-from stat import FILE_ATTRIBUTE_ENCRYPTED
+#from stat import FILE_ATTRIBUTE_ENCRYPTED
 from ImageParser import ImageParser
-from SegmentParserFactory import SegmentParserFactory   # TODO
+from JPGParser.SegmentParser.SegmentParserFactory import SegmentParserFactory
 import logging
 import struct
 import os
@@ -17,11 +17,12 @@ class JPGParser(ImageParser):
         try:
             self.validate_input(filename)
             self.image_fp = open(filename, 'rb')
-            self.validate_header()
+            #self.validate_header()
             
         except (ValueError, FileNotFoundError) as err:
             logging.warning(err)
             print(err)
+            exit()
             
         # TODO: Begin parsing the file. I've already "read" the header signature, so the file pointer is moved up 2 bytes
         self.parse_segments()
@@ -40,7 +41,7 @@ class JPGParser(ImageParser):
             raise ValueError(f'Expected file extension jpg or jpeg but received {extension} from {filename}')
 
     def valid_extension(self, file_extension):
-        if file_extension == 'jpg' or file_extension == 'jpeg':
+        if file_extension == '.jpg' or file_extension == '.jpeg':
             return True
         
         return False
@@ -64,7 +65,7 @@ class JPGParser(ImageParser):
     def parse_segments(self):
         signature = ''
         
-        offset = 0
+        #offset = 0
 
         while signature != 0xffd9:
             signature = self.parse_segment_signature()
@@ -75,10 +76,13 @@ class JPGParser(ImageParser):
             else:
                 length = None
             
+
+            print(hex(signature))
             segment_parser = self.segment_parser_factory.generate(signature, length)
-            segment_parser.parse()
+            segment_parser.parse(self.image_fp)
             
             self.segment_parsers.append(segment_parser)
+            segment_parser.print_metadata()
             
         return
             
@@ -103,3 +107,6 @@ class JPGParser(ImageParser):
         
         return length
     
+    def print_metadata(self):
+        pass
+        return
