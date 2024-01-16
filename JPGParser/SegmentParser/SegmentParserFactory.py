@@ -1,4 +1,5 @@
 from JPGParser.SegmentParser.StartOfImageSegmentParser import StartOfImageSegmentParser
+from JPGParser.SegmentParser.DefineHuffmanTableSegmentParser import DefineHuffmanTableSegmentParser
 
 class SegmentParserFactory():
     def __init__(self):
@@ -21,8 +22,7 @@ class SegmentParserFactory():
             # TODO
             pass
         elif signature == 0xffc4:
-            # TODO
-            pass
+            return DefineHuffmanTableSegmentParser(signature, length)
         elif signature == 0xffda:
             # TODO
             pass
