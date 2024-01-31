@@ -11,12 +11,20 @@ image_data = image_fp.read()
 #print(image_data[0:2])
 
 # Parse the "Start of File" segment signature
-segment_signature = struct.unpack('>H', image_data[0:2])[0]
+#segment_signature = struct.unpack('>H', image_data[0:2])[0]
+segment_signature = struct.unpack('>2s', image_data[0:2])[0]
 
 # Note that 0xffd8 is an int in hex form, but '0xffd8' is a string of the hex form
-assert(segment_signature == 0xffd8)
-print(segment_signature)
-print(hex(segment_signature))
+#assert(segment_signature == 0xffd8)
+segment_sig_str = bytearray(segment_signature)
+temp = [format(c, '02x') for c in segment_sig_str]
+output_str = ''.join(temp)
+    
+print(output_str)
+
+#print(segment_sig_str)
+#print(hex(segment_signature))
+exit()
 #print(type(hex(segment_signature)))
 
 # Each segment except for 0xffd8 (start of file), 0xffd0 (???) and 0xffd9 (end of file) and 0xffd1 (???) have length data proceeding

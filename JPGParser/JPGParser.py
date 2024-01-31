@@ -1,4 +1,3 @@
-#from stat import FILE_ATTRIBUTE_ENCRYPTED
 from ImageParser import ImageParser
 from JPGParser.SegmentParser.SegmentParserFactory import SegmentParserFactory
 import logging

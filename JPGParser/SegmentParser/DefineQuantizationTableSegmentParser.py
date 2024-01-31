@@ -2,9 +2,9 @@ from JPGParser.SegmentParser.SegmentParser import SegmentParser
 import struct
 import logging
 
-class DefineHuffmanTableSegmentParser(SegmentParser):
+class DefineQuantizationTableSegmentParser(SegmentParser):
     def __init__(self, sig, length):
-        assert(sig == 0xffc4)
+        assert(sig == 0xffdb)
         
         self.seg_name = 'Define Quantization Table'
         self.sig = sig
@@ -20,7 +20,7 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         return
     
     def parse_qt_info(self, image_fp):
-        qt_info_fmt_str = 'B',
+        qt_info_fmt_str = '>B'
         qt_info_size = struct.calcsize(qt_info_fmt_str)
         qt_info_bytes = image_fp.read(qt_info_size)
         

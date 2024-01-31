@@ -28,7 +28,7 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         info_bytes = image_fp.read(info_size)
         ht_info = struct.unpack_from(info_fmt_str, info_bytes)[0]
         
-        self.ht_info = None
+        self.ht_info = ht_info
         
         return
 

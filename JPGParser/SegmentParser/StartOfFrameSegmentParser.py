@@ -6,7 +6,7 @@ class StartOfFrameSegmentParser(SegmentParser):
     def __init__(self, sig, length):
         assert(sig == 0xffc0)
         
-        self.seg_name = 'Start of rame'
+        self.seg_name = 'Start of Frame'
         self.sig = sig
         self.len = length
         
