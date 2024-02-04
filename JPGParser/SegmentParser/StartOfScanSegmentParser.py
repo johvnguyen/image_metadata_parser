@@ -10,42 +10,79 @@ class StartOfScanSegmentParser(SegmentParser):
         self.sig = sig
         self.len = length
         
+        # Parse these bytes out later
+        self.image_coefficient_data = None
         self.img_data = None
         
     def parse(self, image_fp):
-        self.skip_byte_stuffing(image_fp)
-        # -2 for length bytes
-        self.img_data = image_fp.read(self.len - 2)
-        print(self.len - 2)
-        print(len(self.img_data))
+        self.image_coefficient_data = image_fp.read(self.len)
+        self.img_data = self.read_to_next_segment(image_fp)
         
         return
     
+    def read_to_next_segment(self, image_fp):
+        img_data = []
+        i = 0
+        start = image_fp.tell()
+        while(True):
+            image_fp.seek(start + i)
+            curr_byte = image_fp.read(1)
+            next_byte = image_fp.read(1)
+            
+            byte = struct.unpack('>B', curr_byte)[0]
+            nbyte = struct.unpack('>B', next_byte)[0]
+            
+            if byte == 0xff:
+                if nbyte != 0x00:
+                    break
+                i += 2
+                img_data.append(curr_byte)
+            else:
+                # Don't count the 0 in calculations. Hence the term 'stuffing'
+                i += 1
+                img_data.append(curr_byte)
+        
+        image_fp.seek(start + i)
+        return img_data
+                
+
+    '''
     def skip_byte_stuffing(self, image_fp):
         start = image_fp.tell()
-        n_stuffed_bytes = 0
         
-        while self.has_stuffing(image_fp):
-            n_stuffed_bytes += 1
-        # -1 because above loop will always go 1 byte more than the number of 0 bytes
-        n_stuffed_bytes -= 1
-            
+        n_stuffed_bytes = self.remove_stuffing(image_fp)
+        print(n_stuffed_bytes)
+        
         image_fp.seek(start)
         stuffed_bytes = image_fp.read(n_stuffed_bytes)
-        #print(f'Number of stuffed bytes: {len(stuffed_bytes)}')
-        #print(stuffed_bytes)
-        
         return
-    
-    def has_stuffing(self, image_fp):
-        next_byte = image_fp.read(1)
-        next_byte = struct.unpack(">B", next_byte)[0]
-        print(next_byte)
-        
-        if next_byte == 0:
-            return True
-        else:
-            return False
+   
+    # TODO: Refactor this function to have more expressive names
+    def remove_stuffing(self, image_fp):
+        i = 0
+        last_byte = 0x00
+        while(True):
+            next_byte = image_fp.read(1)
+            #print(len(next_byte))
+            next_byte = struct.unpack('>B', next_byte)[0]
+            print(hex(next_byte))
+            
+            if last_byte == 0xff:
+                if next_byte == 0x00:
+                    i += 1
+                    last_byte = next_byte
+                else:
+                    return i
+            elif last_byte == 0x00:
+                if next_byte == 0xff:
+                    i += 1
+                    last_byte = next_byte
+                else:
+                    return i
+            else:
+                raise Exception(f'I should not get here. last_byte = {last_byte}, next_byte = {hex(next_byte)}')
+    '''
+                    
 
     def print_metadata(self):
         print(f'----------------------------------------')
