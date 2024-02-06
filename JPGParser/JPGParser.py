@@ -106,6 +106,35 @@ class JPGParser(ImageParser):
         
         return length
     
+    def decode_scan_data(self):
+        assert(len(self.segment_parsers) != 0)
+        start_of_frame_parser = self.get_paser(0xffc0)
+        (img_height, img_width) = start_of_frame_parser.get_img_dimensions()
+        
+        quant_mappings = start_of_frame_parser.get_quant_mappings()
+        dqt_parsers = self.get_parsers(0xffdb)
+        assert(len(dqt_parsers) == 2)
+        
+        # TODO: Implement DCT class and DrawMatrix method
+        
+        
+        
+    def get_parser(self, sig):
+        for parser in self.segment_parsers:
+            if parser.sig == sig:
+                return parser
+        
+        raise Exception(f'No parser for segment {sig} found.')
+    
+    def get_parsers(self, sig):
+        matching_parsers = []
+        
+        for parser in self.segment_parsers:
+            if parser.sig == sig:
+                matching_parsers.append(parser)
+            
+        return matching_parsers
+    
     def print_metadata(self):
         pass
         return

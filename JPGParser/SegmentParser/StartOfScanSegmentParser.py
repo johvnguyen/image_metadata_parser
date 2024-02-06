@@ -16,11 +16,16 @@ class StartOfScanSegmentParser(SegmentParser):
         
     def parse(self, image_fp):
         self.image_coefficient_data = image_fp.read(self.len)
-        self.img_data = self.read_to_next_segment(image_fp)
+        self.img_data = self.parse_img_data(image_fp)
         
         return
     
-    def read_to_next_segment(self, image_fp):
+    def parse_img_data(self, image_fp):
+        img_data = self.remove_byte_stuffing(image_fp)
+        
+        return img_data
+    
+    def remove_byte_stuffing(self, image_fp):
         img_data = []
         i = 0
         start = image_fp.tell()

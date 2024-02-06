@@ -60,6 +60,7 @@ class DefineQuantizationTableSegmentParser(SegmentParser):
             if i % 8 == 0:
                 print('\n')
             print(self.qt_vals[i], end = ' ')
+        print('\n')
         
         return
         

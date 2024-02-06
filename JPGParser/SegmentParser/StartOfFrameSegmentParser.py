@@ -127,3 +127,14 @@ class StartOfFrameSegmentParser(SegmentParser):
        h_sampling_factor = sampling_factor & 0b00001111
        
        return [v_sampling_factor, h_sampling_factor]
+   
+    def get_img_dimensions(self):
+        return (self.img_height, self.img_width)
+    
+    def get_quant_mappings(self):
+        quant_mappings = []
+        
+        for component_id in self.components.keys():
+            quant_mappings.append(self.components[component_id]['QT Mapping'])
+            
+        return quant_mappings
