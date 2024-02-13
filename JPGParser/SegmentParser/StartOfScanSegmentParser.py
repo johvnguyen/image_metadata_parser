@@ -49,6 +49,10 @@ class StartOfScanSegmentParser(SegmentParser):
         
         image_fp.seek(start + i)
         return img_data
+    
+    def get_scan_data(self):
+        return self.img_data
+    
                 
 
     '''

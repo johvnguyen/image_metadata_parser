@@ -1,5 +1,8 @@
 from ImageParser import ImageParser
 from JPGParser.SegmentParser.SegmentParserFactory import SegmentParserFactory
+from Util.IDCT import IDCT
+from Util.Stream import Stream
+from Util.DrawMatrix import DrawMatrix
 import logging
 import struct
 import os
@@ -114,9 +117,64 @@ class JPGParser(ImageParser):
         quant_mappings = start_of_frame_parser.get_quant_mappings()
         dqt_parsers = self.get_parsers(0xffdb)
         assert(len(dqt_parsers) == 2)
+
+        sos_parser = self.get_parser(0xffda)
+        assert(len(sos_parser) == 1)
+        sos_parser = sos_parser[0]
+        st = Stream(sos_parser.get_scan_data())
         
-        # TODO: Implement DCT class and DrawMatrix method
+        # TODO: Replace the variables with my variables
+        '''
+        for y in range(img_height // 8):
+            for x in range(img_width // 8):
+                matL, oldlumdccoeff = self.BuildMatrix(st,0, self.quant[self.quantMapping[0]], oldlumdccoeff)
+                matCr, oldCrdccoeff = self.BuildMatrix(st,1, self.quant[self.quantMapping[1]], oldCrdccoeff)
+                matCb, oldCbdccoeff = self.BuildMatrix(st,1, self.quant[self.quantMapping[2]], oldCbdccoeff)
+                DrawMatrix(x, y, matL.base, matCb.base, matCr.base )
         
+        # What do I return???
+        return 
+        '''  
+
+    def BuildMatrix(self, st, idx, quant, olddccoeff):
+        i = IDCT()
+
+        code = self.huffman_tables[0 + idx].GetCode(st)
+        bits = st.GetBitN(code)
+        dccoeff = self.decode_number(code, bits) + olddccoeff
+
+        i.base[0] = (dccoeff) * quant[0]
+        l = 1
+        while l < 64:
+            code = self.huffman_tables[16 + idx].GetCode(st)
+            if code == 0:
+                break
+
+            # The first part of the AC quantization table
+            # is the number of leading zeros
+            if code > 15:
+                l += code >> 4
+                code = code & 0x0F
+
+            bits = st.GetBitN(code)
+
+            if l < 64:
+                coeff = self.decode_number(code, bits)
+                i.base[l] = coeff * quant[l]
+                l += 1
+
+        i.rearrange_using_zigzag()
+        i.perform_IDCT()
+
+        return i, dccoeff
+        
+    def decode_number(self, code, bits):
+        l = 2 ** (code - 1)
+        
+        if bits >= l:
+            return bits
+        else:
+            return bits - (2 * l - 1)
         
         
     def get_parser(self, sig):
