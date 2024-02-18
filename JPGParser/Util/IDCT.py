@@ -34,8 +34,9 @@ class IDCT:
         
         for u in range(precision):
             row = []
+            
             for x in range(precision):
-                row.append(self.NormCoeff(u) math.cos(((2.0 * x + 1.0) * u * math.pi) / 16.0))
+                row.append(self.NormCoeff(u) * math.cos(((2.0 * x + 1.0) * u * math.pi) / 16.0))
             
             idct_table.append(row)
         

@@ -11,12 +11,17 @@ class StartOfScanSegmentParser(SegmentParser):
         self.len = length
         
         # Parse these bytes out later
-        self.image_coefficient_data = None
+        self.raw_img_data = None
         self.img_data = None
         
     def parse(self, image_fp):
-        self.image_coefficient_data = image_fp.read(self.len)
-        self.img_data = self.parse_img_data(image_fp)
+        start = image_fp.tell()
+        self.raw_img_data = image_fp.read()
+        #self.raw_img_data = self.raw_img_data[start:]
+        
+        #self.img_data = self.parse_img_data(image_fp)
+        lenchunk, self.img_data = self.remove_byte_stuffing(self.raw_img_data)
+        image_fp.seek(start + lenchunk)
         
         return
     
@@ -24,6 +29,23 @@ class StartOfScanSegmentParser(SegmentParser):
         img_data = self.remove_byte_stuffing(image_fp)
         
         return img_data
+    
+    def remove_byte_stuffing(self, data):
+        datapro = []
+        i = 0
+        while(True):
+            b,bnext = struct.unpack("BB",data[i:i+2])        
+            if (b == 0xff):
+                if (bnext != 0):
+                    break
+                datapro.append(data[i])
+                i+=2
+            else:
+                datapro.append(data[i])
+                i+=1
+        return i, datapro
+    
+    '''
     
     def remove_byte_stuffing(self, image_fp):
         img_data = []
@@ -37,6 +59,7 @@ class StartOfScanSegmentParser(SegmentParser):
             byte = struct.unpack('>B', curr_byte)[0]
             nbyte = struct.unpack('>B', next_byte)[0]
             
+            
             if byte == 0xff:
                 if nbyte != 0x00:
                     break
@@ -49,6 +72,7 @@ class StartOfScanSegmentParser(SegmentParser):
         
         image_fp.seek(start + i)
         return img_data
+    '''    
     
     def get_scan_data(self):
         return self.img_data
@@ -97,5 +121,6 @@ class StartOfScanSegmentParser(SegmentParser):
         print(f'----------------------------------------')
         print(f'Segment Name: {self.seg_name}')
         print(f'Segment Signature: {self.sig}')
+        #print(f'Segment Length: {self.len}')
         print(f'----------------------------------------\n\n')
         return

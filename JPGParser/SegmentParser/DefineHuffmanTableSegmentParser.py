@@ -1,4 +1,5 @@
 from JPGParser.SegmentParser.SegmentParser import SegmentParser
+from JPGParser.Util.HuffmanTable import HuffmanTable
 import struct
 import logging
 
@@ -12,6 +13,10 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         
         self.ht_info = None
         self.codewords = {}
+        self.huffman_tables = {}
+        
+        self.lengths = None
+        self.elements = []
         
     
     def parse(self, image_fp):
@@ -19,6 +24,8 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         
         self.parse_huffman_table_info(image_fp)
         self.parse_codewords(image_fp)
+        
+        #self.set_huffman_table()
         
         return
     
@@ -34,12 +41,15 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
 
     def parse_codewords(self, image_fp):
         codeword_lengths = self.parse_codeword_lengths(image_fp)
+        self.lengths = codeword_lengths
         
         for length in codeword_lengths:
             codewords_fmt_str = 'B' * length
             codewords_size = struct.calcsize(codewords_fmt_str)
             codewords_bytes = image_fp.read(codewords_size)
             codewords = struct.unpack_from(codewords_fmt_str, codewords_bytes)
+            
+            self.elements += codewords
             
             self.codewords[length] = codewords
 
@@ -51,6 +61,23 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         lengths_bytes = image_fp.read(lengths_size)
         
         return struct.unpack_from(lengths_fmt_str, lengths_bytes)
+    
+    def get_huffman_table(self):
+        # JPGParser calls this to obtain the HuffmanTable object which it
+        # uses to construct the huffman table map.
+        # self.ht_info is used toindex the huffman table map
+        elements = self.elements
+        '''
+        for length in self.lengths:
+            elements += self.elements[length]
+        '''
+        print(f'Lengths: {self.lengths}')
+        print(f'Elements {elements}')
+            
+        hf = HuffmanTable()
+        hf.GetHuffmanBits(self.lengths, elements)
+        
+        return (self.ht_info, hf)
         
 
     def print_metadata(self):
@@ -69,4 +96,6 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
     def print_ht_info(self):
         # TODO: extract the bits
         print("{:08b}".format(self.ht_info))
+        print(f'\t({self.ht_info})')
         return
+    

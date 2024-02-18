@@ -5,8 +5,11 @@ class Stream:
 
     def GetBit(self):
         b = self.data[self.pos >> 3]
+        # JOHN EDIT
+        #b = b[0]
         s = 7-(self.pos & 0x7)
         self.pos+=1
+        #print((b >> s) & 1)
         return (b >> s) & 1
 
     def GetBitN(self, l):
