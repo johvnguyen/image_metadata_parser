@@ -156,7 +156,7 @@ class JPGParser(ImageParser):
         for parser in dht_parsers:
             # idx = 0 -> DC table values
             # idx = 1 -> AC table values
-            (idx, ht) = parser.get_huffman_table()
+            (idx, ht) = parser.get_ht_data()
             
             self.ht_map[idx] = ht
             
