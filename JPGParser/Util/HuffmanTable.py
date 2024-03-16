@@ -1,31 +1,36 @@
 class HuffmanTable:
     def __init__(self):
         self.root = []
-        self.elements = []
         
         self.count = 0
         
     def DecodeHuffmanBits(self,  lengths, elements):
         '''
         DecodeHuffmanBits - This function builds the nested list data structure which maps Huffman encodings to the corresponding element by list index. Effectively, makes self.root become a Huffman tree.
-            lengths:    lengths of the bitstrings of te corresponding elements
-            elements:   values which the bitstrings map to (are actually delta encoding values)
+            lengths:    counts number of encodings at a particular length
+            elements:   values which the bitstrings map to (are actually delta encoding values). Ordered from shortest to longest encodings
         '''
-        # It doesn't seem like self.elements is referenced anywhere else... this variable seems unecessary
-        self.elements = elements
         elem_iter = 0
         
-        # iterate over each length value, equivalently, iterates over each element value as these lists should be the same length
-        # IDEA: Add an assert statement to verify this is true
-        for i in range(len(lengths)):
-            # Iterate over each element of this specific length value
-            for j in range(lengths[i]):
-                # Put this element into the huffman tree
-                self.BitsFromLengths(self.root, elements[elem_iter], i)
-                # Iterate the element in the array
+        assert(sum(lengths) == len(elements))
+        
+        for encoding_length in self.getEncodingLength(lengths):
+            # Last bit is assigned by placing the element in the tree. So we only need to account for the remaining bits
+            # prefix bits
+            n = encoding_length - 1
+            for encoding in self.getNumOfEncodingsWithLengthN(lengths, n):
+                self.BitsFromLengths(self.root, elements[elem_iter], n)
                 elem_iter += 1
                 
         return
+    
+    def getEncodingLength(self, lengths):
+        encoding_lengths = range(1, len(lengths) + 1)
+        
+        return encoding_lengths
+    
+    def getNumOfEncodingsWithLengthN(self, lengths, prefix_len):
+        return range(lengths[prefix_len])
     
     def BitsFromLengths(self, root, element, pos):
         # Consider the inputs as:
