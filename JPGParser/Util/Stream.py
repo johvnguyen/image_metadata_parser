@@ -1,3 +1,7 @@
+'''
+Feed this class data and parse it using GetBitN
+'''
+
 class Stream:
     def __init__(self, data):
         self.data= data

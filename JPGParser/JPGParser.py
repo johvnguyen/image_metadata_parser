@@ -84,7 +84,6 @@ class JPGParser(ImageParser):
                 length = None
             
 
-            print(hex(signature))
             segment_parser = self.segment_parser_factory.generate(signature, length)
             segment_parser.parse(self.image_fp)
             
@@ -129,8 +128,6 @@ class JPGParser(ImageParser):
         assert(len(sos_parser) == 1)
         sos_parser = sos_parser[0]
         img_data = sos_parser.get_scan_data()
-        print(f'Length of image data: {len(img_data)}')
-        #img_data = bytearray(img_data)
         st = Stream(img_data)
         
         # Sets self.ht_map

@@ -27,8 +27,6 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         
         self.construct_huffman_table()
         
-        #self.set_huffman_table()
-        
         return
     
     def parse_huffman_table_info(self, image_fp):
@@ -66,11 +64,9 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         # JPGParser calls this to obtain the HuffmanTable object which it
         # uses to construct the huffman table map.
         # self.ht_info is used toindex the huffman table map
-        print(f'Lengths: {self.lengths}')
-        print(f'Elements {self.codewords}')
             
         self.ht = HuffmanTable()
-        self.ht.GetHuffmanBits(self.lengths, self.codewords)
+        self.ht.DecodeHuffmanBits(self.lengths, self.codewords)
         
         return
     
@@ -82,16 +78,13 @@ class DefineHuffmanTableSegmentParser(SegmentParser):
         print(f'----------------------------------------')
         print(f'Segment Name: {self.seg_name}')
         print(f'Segment Signature: {self.sig}')
-        self.print_ht_info()
         
+        print("{:08b}".format(self.ht_info))
         
+        print(f'\t(Channel Index: {self.ht_info})')
+        
+        print(f'\tCodeword Lengths: {self.lengths}')
+        print(f'\tCodewords: {self.codewords}')
         print(f'----------------------------------------\n\n')
         
         return
-
-    def print_ht_info(self):
-        # TODO: extract the bits
-        print("{:08b}".format(self.ht_info))
-        print(f'\t({self.ht_info})')
-        return
-    
