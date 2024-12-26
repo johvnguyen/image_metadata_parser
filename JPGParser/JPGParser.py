@@ -15,7 +15,7 @@ class JPGParser(ImageParser):
         self.segment_parsers = []
         self.segment_parser_factory = SegmentParserFactory()
         self.master = Tk()      # Is there a better name for this?
-        self.canvas = Canvas(self.master, width = 1600, height = 600)   # Can I initialize size dynamically?
+        self.canvas = Canvas(self.master, width = 400, height = 400)   # Making Canvas any larger will cause it to crash
         self.ht_map = {}
         
         return
@@ -170,30 +170,38 @@ class JPGParser(ImageParser):
         
 
     def BuildMatrix(self, st, idx, quant, olddccoeff):
+        # initialize the IDCT coefficient matrix with all 0s
         i = IDCT()
 
         # TODO: Replace this with my code
-        code = self.ht_map[0 + idx].GetCode(st)
-        bits = st.GetBitN(code)
-        dccoeff = self.decode_number(code, bits) + olddccoeff
+        # Huffman decode data stream to obtain length of the delta-encoded qunatized value
+        enc_quantized_val_len = self.ht_map[0 + idx].decodeQuantizedValue(st)
+        
+        # Get the delta-encoded value
+        bits = st.GetBitN(enc_quantized_val_len)
+        
+        # Decode the first IDCT coefficient
+        dccoeff = self.decode_number(enc_quantized_val_len, bits) + olddccoeff
 
         i.base[0] = (dccoeff) * quant[0]
         l = 1
+        # Get the next 63 IDCT coefficients (TODO: What process is this in particular?)
         while l < 64:
-            code = self.ht_map[16 + idx].GetCode(st)
-            if code == 0:
+            enc_quantized_val_len = self.ht_map[16 + idx].decodeQuantizedValue(st)
+
+            # Once the coefficient is 0, it is safe to assume all proceeding coefficients have minimal impact on image
+            if enc_quantized_val_len == 0:
                 break
 
-            # The first part of the AC quantization table
-            # is the number of leading zeros
-            if code > 15:
-                l += code >> 4
-                code = code & 0x0F
+            
+            if enc_quantized_val_len > 15:
+                l += enc_quantized_val_len >> 4
+                enc_quantized_val_len = enc_quantized_val_len & 0x0F    # Mod 16
 
-            bits = st.GetBitN(code)
+            bits = st.GetBitN(enc_quantized_val_len)
 
             if l < 64:
-                coeff = self.decode_number(code, bits)
+                coeff = self.decode_number(enc_quantized_val_len, bits)
                 i.base[l] = coeff * quant[l]
                 l += 1
 
@@ -203,11 +211,19 @@ class JPGParser(ImageParser):
         return i, dccoeff
         
     def decode_number(self, code, bits):
+        print(f'code: {code}, bits: {bits}')
         l = 2 ** (code - 1)
         
+        print(f'l: {l}')
+        
+        # leading bit is 1 
         if bits >= l:
+            #print(f'NGUYEN: bits >= l')
             return bits
+        # leading bit is 0
         else:
+            print(f'NGUYEN: bits < l')
+            print(f'return {bits - (2 * l - 1)}\n\n')
             return bits - (2 * l - 1)
         
         
